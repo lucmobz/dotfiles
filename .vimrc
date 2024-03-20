@@ -1,11 +1,21 @@
+set nocp
+syntax on
+filetype plugin indent on
+
 let g:mapleader="<space>"
+let g:coc_global_extensions=['coc-clangd']
 
 " https://github.com/junegunn/vim-plug/wiki/tips#automatic-installation
-" Ensure vim-plug is installed
+" Install vim-plug if not found
 if empty(glob('~/.vim/autoload/plug.vim'))
-  silent execute '!curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 endif
+
+" Run PlugInstall if there are missing plugins
+autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+  \| PlugInstall --sync | source $MYVIMRC
+\| endif
 
 " https://github.com/junegunn/vim-plug/wiki/tutorial
 " :PlugInstall to install plugins in this list
@@ -15,24 +25,24 @@ endif
 " Put the following line in between
 " Plug <plugin-name> [options]
 call plug#begin()
-" https://github.com/nvm-sh/nvm
-" Must install nodejs/node, npm, nvm (for local updated node versions) and clangd
-" https://github.com/clangd/coc-clangd
-" Must run :PlugInstall, :CocInstall coc-clangd, :CocCommand clangd.install,
-" for local updated clangd versions
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
 " https://github.com/rose-pine/vim
-Plug 'rose-pine/vim'
+Plug 'rose-pine/vim' " TODO: weird error when including this
+
+" https://github.com/nvm-sh/nvm
+" Use nvm to install local updated node/nodejs version
+" https://github.com/clangd/coc-clangd
+" Run `:CocCommand clangd.install` for local updated clangd version, else will
+" use system package
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
 call plug#end()
 
-set nocompatible
-syntax on
-filetype plugin indent on
-set nu rnu tgc cc=80 scl=yes so=5 bg=dark
 set ts=2 sts=2 sw=2 et si ai
+set nu rnu so=5 scl=yes cc=80
 set wmnu ttyfast mouse=a nobk nowb ut=300
-set spr sb
-colo rosepine
+set tgc bg=dark spr sb
+colo rosepine " TODO: error when loading this (thought plug was loading first)
 
 " https://github.com/neoclide/coc.nvim/wiki/Completion-with-sources
 " coc-nvim config
