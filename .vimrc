@@ -1,4 +1,5 @@
-" TODO: bugs when sourcing this script the first time
+" TODO: bugs when sourcing this script the first time, all seems to work
+" though
 " TODO: it seems `:colo rosepine` is called before the plugin is installed
 " (despite the --sync; does PlugInstall open a new buffer so that the reading
 " of .vimrc goes on and errors out?
@@ -36,14 +37,16 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
 " Plug <plugin-name> [options]
 call plug#begin()
 
-" https://github.com/rose-pine/vim
+" https://github.com/rose-pine/viem
 Plug 'rose-pine/vim'
 
 " https://github.com/nvm-sh/nvm
-" Use nvm to install local updated node/nodejs version (required)
+" Use nvm to install local updated node/nodejs version (required),
+" alternatively install nodejs and npm via the package manager (they must be
+" recent versions though)
 " https://github.com/clangd/coc-clangd
-" Run `:CocCommand clangd.install` for local updated clangd version, else will
-" use system installed binaries (older version)
+" Run when in a c/c++ file `:CocCommand clangd.install` for local updated 
+" clangd version, else will use system installed binaries (older version)
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 call plug#end()
